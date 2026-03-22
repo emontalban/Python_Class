@@ -1,7 +1,11 @@
-class Invoice:
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
 
-  def greeting(self):
-    return 'Hi there'
+    def __str__(self):
+        return f"{self.nombre}, {self.edad} años"
 
-
-inv_one = Invoice()
+p = Persona("Ana", 30)
+print(p) # -> Ana, 30 años
+print(str(p))
