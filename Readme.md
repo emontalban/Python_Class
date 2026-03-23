@@ -114,12 +114,12 @@ Pipenv crea un proyecto en un entorno aislado(virtual environment) donde cada pr
    #### Diferencia Pip vs Pipenv
 
 
-    | Característica       | pip    | pipenv     |
-    | -------------------- | ------ | ---------- |
-    | Instalación          | Global | Aislada    |
-    | Control de versiones | Manual | Automático |
-    | Entorno virtual      | No     | Sí         |
-    | Seguridad            | Baja   | Alta       |
+| Característica       | pip    | pipenv     |
+| -------------------- | ------ | ---------- |
+| Instalación          | Global | Aislada    |
+| Control de versiones | Manual | Automático |
+| Entorno virtual      | No     | Sí         |
+| Seguridad            | Baja   | Alta       |
 
 ## ● Clases
 Las clases es una estructura que permite definir un tipo de objeto agrpando datos o caracteristicas(atributos) y comportamientos(funciones o acciones) que un objeto especifico tendrá.
@@ -390,5 +390,97 @@ p = Persona("Ana", 30)
 
 print(str(p))   # usa __str__
 print(repr(p))  # usa __repr__
+```
+
+#### EL método `__iter__` y el método `__next__`
+El método `__iter__` se encarga de devolver el objeto iterable y de prepararlo para comenzar a recorrerlo. Un objeto es iterable cuando puede recorrerse elemento a elemento, como ocurre con listas, tuplas o diccionarios. Cuando usamos un for, Python utiliza internamente este método.
+
+El método `__next__` devuelve el siguiente elemento cada vez que se llama. Es el encargado de indicar cuál es el próximo valor en la iteración.
+
+**iterador personalizado** es cuando definimos una clase con los metodos `__iter__` y `__next__`. Esto nos permite controlar completamente cómo se recorren los datos..
+No siempre queremos recorrer una lista de forma normal, a veces se necesita comportamientos especiales como reiniciar automaticamente, saltar elementos, repetir infinitamente, etc..  
+En este ejemplo creamos un iterador que recorre una lista de lenguajes y, al llegar al final, vuelve automáticamente al inicio:
+
+```python
+class InfiniteList:
+    def __init__(self, lista):
+        self.lista = lista
+        self.last_index = len(lista) - 1
+    
+    def __iter__(self):
+        self.n = 0
+        return self
+    
+    def __next__(self):
+        lenguaje = self.lista[self.n]
+
+        if self.n < self.last_index:
+            self.n += 1
+        else:
+            self.n = 0
+
+        return lenguaje
+    
+lenguajes = ["Python", "JavaScript", "Java", "C++"]
+
+bucle = InfiniteList(lenguajes)
+it = iter(bucle)
+
+print(next(it))  # Python
+print(next(it))  # JavaScript
+print(next(it))  # Java
+print(next(it))  # C++
+print(next(it))  # Python (reinicia)
+print(next(it))  # JavaScript
+```
+
+Empieza en python va uno a uno y, cuando llega al final vuelve el inicio automaticamente. Como por ejemplo en una playlist en bucle que nunca se detiene.
+
+#### yield
+*yield* convierte un funcion normal en un generador, un generador es como un iterador pero  no necesitas escribri ni `__iter__` ni `__next__`, python lo gestiona todo automaticamente, el codigo es mas limpio y facilde entender.
+
+Yield devuel un valor y pausa la funcion, guardando su estado, cuando vuelves a llamar a la funcion continua donde se quedo,  return termina la funcion.
+
+Comparando los difeente metodos:
+
+
+| Método                  | Complejidad  | Control                 | Uso real        |
+| ----------------------- | ------------ | ----------------------- | --------------- |
+| `__iter__` + `__next__` | Más complejo | Máximo control          | Casos avanzados |
+| `yield` (generadores)   | Muy simple   | Suficiente en casi todo |   Más usado     |
+
+
+Ejemplo:
+
+```python
+
+class InfinityLoop:
+    def __init__(self,languages):
+        self.languages = languages
+
+    def loop(self):
+        index_max = len(self.languages)
+        index = 0
+
+        while  true:
+            if index < index_max:
+                yield self.languages[index]
+            else:
+                index = 0
+                yield self.languages[index]
+
+            index += 1
+
+    def __str__(self):
+            return f"InfinityLoop: {(self.languages)}"  
+
+#bucle = Infinityloop(languages).loop()
+languages_favourites = InfinityLoop(lenguajes)
+bucle = languages_favorites.loop()
+
+print(next(bucle))
+ 
+
+
 ```
 
