@@ -15,21 +15,21 @@
 Pipenv es una herramienta de python que combina gestion de dependencias y entonornos virtuales su objetivo es organizar y aislar las librerias de cada proyecto.
 Pipenv crea un proyecto en un entorno aislado(virtual environment) donde cada proyecto tiene sus propias liberias, no hay confictos entre versiones y todo queda organizado en un archivo (Pipfile)
 
-✅ Ventajas
+_Ventajas_
 
-✔ Aislamiento de dependencias  
-✔ Evita conflictos entre proyectos  
-✔ Control de versiones automático  
-✔ Fácil de usar  
-✔ Integra pip + virtualenv  
-✔ Mejora la reproducibilidad del proyecto
+- Aislamiento de dependencias  
+-  Evita conflictos entre proyectos  
+-  Control de versiones automático  
+-  Fácil de usar  
+-  Integra pip + virtualenv  
+-  Mejora la reproducibilidad del proyecto
 
-❌ Desventajas
+_Desventajas_
 
-❌ Puede ser más lento que pip  
-❌ A veces da problemas en Windows  
-❌ Menos usado que alternativas modernas (como Poetry)  
-❌ Puede ser confuso al principio
+- Puede ser más lento que pip  
+-  A veces da problemas en Windows  
+-  Menos usado que alternativas modernas (como Poetry)  
+-  Puede ser confuso al principio
 
 #### 1. Requisitos previos
 
@@ -625,13 +625,78 @@ archivo.close()
 
 
 El archivo se abre para leerlo, se lee y despues hay que cerrarlo para liberar recursos.  
+
+Ejemplo de escritura
+```python
 lenguajes = open("lenguajes_programacion.txt", "w+")  
 lenguajes.write("Python es un lenguaje de programacion")  
+lenguajes.close()
+```
+El modo w+, el `+`  indique que el archivo es de escritura y lectura a la vez.
+Cuando abres el archivo con `w+` sobreescribira todo su contenido. Para poder editarlo si el archivo existe sin borrarlo se us `r+`
+
+| Modo  | Lectura | Escritura | Crea archivo           | Borra contenido | Cursor inicial | Descripción                      |
+| ----- | ------- | --------- | ---------------------- | --------------- | -------------- | -------------------------------- |
+| `"r"` | Sí      | No        | No                     | No              | Inicio         | Solo lectura, error si no existe |
+| `"w"` | No      | Sí        | Sí                     | Sí              | Inicio         | Escribe y sobrescribe            |
+| `"a"` | No      | Sí        | Sí                     | No              | Final          | Añade al final                   |
+| `"x"` | No      | Sí        | Sí (solo si no existe) | No              | Inicio         | Crea archivo nuevo               |
+|       |                 |                  |                  |                  |                 |                  |
+| `"r+"` | Sí      | Sí        | No           | No              | Inicio         | Leer y escribir sin borrar    |
+| `"w+"` | Sí      | Sí        | Sí           | Sí              | Inicio         | Leer y escribir (sobrescribe) |
+| `"a+"` | Sí      | Sí        | Sí           | No              | Final          | Leer y añadir                 |
 
 
 
+## ● fnmatch y fnmatchcase
+El modulo fnmatch compara nombre de archivos contra un patron sencillo usando caracteres especiales como `*`(todo) o `?` (un solo caracter)
 
+- *fnmatch* : No distingue mayusculas de minusculas (case-insensitive) 
+- *fmatchcase* : Distitngue mayúsculas de minúsculas (case-sensitive)
 
+Ejemplo
+```python
+import fnmatch
+import os
 
+archivos = [
+    "datos.csv", 
+    "script.PY", 
+    "notas.txt", 
+    "config.ini", 
+    "main.py",
+    "foto.jpg"
+]
 
+# 1. Usando fnmatch (Ignora mayúsculas/minúsculas)
+print("--- Archivos de Python (.py) ---")
+for nombre in archivos:
+    if fnmatch.fnmatch(nombre, "*.py"):
+        print(f"Encontrado: {nombre}")
+
+# 2. Usando fnmatchcase (Diferencia .py de .PY)
+print("\n--- Solo minúsculas (.py) con fnmatchcase ---")
+for nombre in archivos:
+    if fnmatch.fnmatchcase(nombre, "*.py"):
+        print(f"Encontrado: {nombre}")
+```
+Con una lista compresiva
+```python
+import fnmatch
+import os
+
+ruta = "." # Carpeta actual
+patron = "*.txt"
+
+archivos_txt = [f for f in os.listdir(ruta) if fnmatch.fnmatch(f, patron)]
+
+print(f"Archivos de texto encontrados: {archivos_txt}")
+```
+
+| Símbolo | Significado |
+|--------|------------|
+| `*` | Coincide con todo (cualquier número de caracteres) |
+| `?` | Coincide con un solo carácter cualquiera |
+| `[seq]` | Coincide con cualquier carácter dentro de los corchetes (ej. `[0-9]`) |
+| `[!seq]` | Coincide con cualquier carácter que no esté en los corchetes |
 
