@@ -31,6 +31,9 @@ _Desventajas_
 -  Menos usado que alternativas modernas (como Poetry)  
 -  Puede ser confuso al principio
 
+Para instalar pipenv en tu proyecto `pipenv install --python 3`
+Para ejecutar el proyecto  `pipenv run 'nombre del proyecto'`
+
 #### 1. Requisitos previos
 
    Antes de empezar necesitas:
