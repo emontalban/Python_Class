@@ -484,3 +484,154 @@ print(next(bucle))
 
 ```
 
+### Diferencias entre atributo de clase y atributo de intancia
+Los atributos de clase son compartidos por tods las intancias(objetos)  de una clase y se definen  fuera de los metodos. En Cambio los atributos de instancias son unicos para cada objeto y se definen dentro de metodos (`__init__`) usando *self*
+
+| Característica  | Atributo de instancia        | Atributo de clase         |
+| --------------- | ---------------------------- | ------------------------- |
+| Dónde se define | `__init__`                   | En la clase               |
+| Pertenece a     | Cada objeto                  | La clase                  |
+| Compartido      |  No                          |   Sí                      |
+| Uso típico      | datos propios (nombre, edad) | constantes (tipo, config) |
+
+```python
+
+class Lenguaje:
+    tipo = "Lenguaje de programación"  # atributo de clase (compartido)
+
+    def __init__(self, nombre, tipado):
+        self.nombre = nombre      # atributo de instancia
+        self.tipado = tipado      # atributo de instancia
+
+l1 = Lenguaje("Python", "dinámico")
+l2 = Lenguaje("Java", "estático")
+
+print(l1.tipo)  # Lenguaje de programación
+print(l2.tipo)  # Lenguaje de programación
+
+```
+## ● Herencia
+La herencia es un proceso mediante el cual se puede crear un a clase hija que hereda de una clase padre, comparitnedo sus métodos y atributos. Ademas de ello , una clase hija puede sobreescribir los métodos o atributos, o incluso definir unos nuevos.
+
+La clase original se denomina clase padre o superclase, mientras que la nueva clase se denomina clase hija o subclase.
+
+La subclase o hija hereda todos los atriburos y métodos de la clase padre, puede añadir nuemos comportamientos y puede modificar(sobreescribir)los existentes.
+
+Este mecanismo favorece la reutilizacion de codigo, la organizacion jerarquica y la extensibilidad de los programas.
+
+```python
+class User:
+  def __init__(self, email, first_name, last_name):
+    self.email = email
+    self.first_name = first_name
+    self.last_name = last_name
+
+  def greeting(self):
+    return f'Hi {self.first_name} {self.last_name}'
+
+class AdminUser(User):
+  def active_users(self):
+    return '500'
+
+
+keira = AdminUser('keira@email.com', 'Keira', 'Wolf')
+
+hexe = User('hexe@devcamp.com', 'Hexe', 'McDowell')
+
+print(keira.active_users())
+print(keira.greeting())
+print(hexe.active_users()) # Da error
+```
+*User* es la clase padre y *AdminUser* es la clase hija asi que la clase hija tiene sus propios metodos y ademas los metodos y atributos de la clase padre, pero los metodos del la clase hija no los puede usar el padre. como el metodo `active_user`que es de la clase hija.
+
+## ● Polimorfismo
+El polimorfismo es un principio de programacion orientada a objeto que permite que diferentes clases respondan al mismo método de  manera distinta, adaptantdo su comportamiento según el tipo de objeto que lo implementa.
+
+Se basa en la ide de un mismo mensaje (llamada a un metodo )puede producir diferentes resultados dependiendo del objeto que lo recibe.
+Generalmente se utiliza junto a a la herencia, donde las clases hijas sobreescriben metodos de la clase padre para porporcionar comportamientos especificos.
+```python
+class Html:
+    def __init__(self, content):
+        self.content = content
+
+    def render(self):
+        raise NotImplementedError("Subclass must implement render method")
+
+class Heading(Html):
+    def render(self):
+        return f"<h1>{self.content}</h1>"
+
+class Div(Html):
+    def render(self):
+        return f"<div>{self.content}</div>"
+
+
+tags = [
+    Div("Hola soy un div"),
+    Heading("Soy un Titulo"),
+    Div("Yo soy otro div")
+]
+
+for tag in tags:
+    print(tag.render())
+
+
+```
+
+La *clase Html* es una clase padre abstracta, no se quiere que se use directamente y obliga a las hijas a implementar render(). `raise NotImplementedError` es como decir si no defines este metodo en la clase hija  da Error.
+
+ `raise NotImplementedError` es una sentencia que lanza explicitamente una excepcion para indicar que la funcion, metodo o clase aun no ha sido programada  o requiere ser sobreescrita por la subclase(hija). Lanza un error de no implementado, es comun en metodos de clase base o interfaces que las subclases derivadas deben implementar obligatoriamente.
+
+La clases hijas heredan de la clase padre Html pero cambian su comportamiento en render().
+
+La clase Html no es un clase abstracta formal en python, porque python tiene un sistema oficial para eso (modulo abc) y aqui no lo estamos implementando.
+
+En resumen Polimorfismo es cuando distintos objetos usan el mismo método pero con comportamientos diferentes.
+
+## ● Utilización de Archivos en Python
+
+Trabajar con archivos python se parece a trabajar con libros. Abres el libro, mientras esta abierto lo puedes escribir o leer y cuando acabas lo cierras.
+
+La gestión de archivos en Python permite crear, leer, modificar y eliminar archivos en el sistema.
+Es fundamental para trabajar con datos persistentes, logs, configuraciones o cualquier información que deba guardarse fuera del programa.
+
+Python proporciona funciones integradas sencillas y potentes para manejar archivos de forma segura y eficiente.
+
+#### Abrir un archivo (open())
+La funcion open() permite para abrir archivos para leerlo, escribirlos o modifificarlos.
+La funcion `open()` toma dos parámetros nombre de archivo y modo.
+```python
+archivo = open("nombre_del_archivo", "modo")
+```
+Donde *nombre de archivo* es el nombre del archivo o la ruta, y el modo como se va abrir(lectura, escritura, crear, texto o binario)
+
+Existen 4 modos diferentes para abrir un archivo.
+
+- **"r"** - Lectura - Valor predeterminado. Abre un archivo para lectura; se produce un error si el archivo no existe.  
+- **"a"** - Añadir - Abre un archivo para añadir contenido; si no existe, lo crea.  
+- **"w"** - Escribir - Abre un archivo para escritura; si no existe, lo crea.  
+- **"x"** - Crear - Crea el archivo especificado; si el archivo ya existe, devuelve un error.  
+
+Ademas se puede espedificar si el archivo debe de tratarse como binario o modo texto
+- **"t"** - Texto - Valor predeterminado. Modo texto.    
+- **"b"** - Binario - Modo binario (por ejemplo, imágenes).  
+
+```python
+archivo = open("archivo.txt", "r")
+contenido = archivo.read()
+print(contenido)
+archivo.close()
+```
+
+
+El archivo se abre para leerlo, se lee y despues hay que cerrarlo para liberar recursos.  
+lenguajes = open("lenguajes_programacion.txt", "w+")  
+lenguajes.write("Python es un lenguaje de programacion")  
+
+
+
+
+
+
+
+

@@ -137,3 +137,132 @@ print(next(bucle))
 
 
 print("**********************************************")
+
+#atributo de clase y atributo de instancia
+class NewLanguage:
+    categoria = "Programación"  # atributo de clase
+
+    def __init__(self, nombre, paradigma):
+        self.nombre = nombre
+        self.paradigma = paradigma
+
+    def mostrar_info(self):
+        print(f"{self.nombre} es de tipo {self.categoria} y paradigma {self.paradigma}")
+
+l1 = NewLanguage("Python", "multiparadigma")
+l2 = NewLanguage("JavaScript","multiparadigma")
+
+l1.mostrar_info()
+l2.categoria = "Programacion de alto nivel"
+l2.mostrar_info()
+
+print(l1.__dict__)
+print(l2.__dict__)
+
+print(NewLanguage.__dict__['categoria'])
+
+print("**********************************************")
+
+#herencia
+
+class Lenguaje:
+    def __init__(self, nombre):
+        self.nombre = nombre
+
+    def ejecutar(self):
+        return f"{self.nombre} se puede ejecutar"
+    
+class LenguajeCompilado(Lenguaje):
+    def compilar(self):
+        return f"{self.nombre} necesita ser compilado"
+
+class LenguajeInterpretado(Lenguaje):
+    def interpretar(self):
+        return f"{self.nombre} se ejecuta sin compilar"
+
+l1 = Lenguaje("JavaScript")    
+python = LenguajeInterpretado("Python")
+c = LenguajeCompilado("C")
+
+print(l1.ejecutar())       # Propio del padre
+
+print(python.ejecutar())     # Propio del padre que heredan los hijos
+print(python.interpretar())  # propio del hijo
+
+print(c.ejecutar())         #  Propio del padre que heredan los hijos
+print(c.compilar())         # propio del hijo
+    
+
+# Poliformismo 
+class Language:
+    def __init__(self,name):
+        self.name = name
+
+    def creator(self):
+        raise NotImplementedError ("Error")
+    
+class JavaScript(Language):
+    def creator(self):
+        return f'JavaScript fue creado por {self.name}'   
+class Python(Language):
+    def creator(self):
+        return f'Python fue creado por {self.name}'
+class Ruby (Language):
+    def creator(self):
+        return  f'Ruby fue creado por {self.name}'
+class Java(Language):
+    def creator(self):
+         return f'Java fue creado por {self.name}'
+    
+names =[
+    JavaScript(" Brendan Eich"),
+    Python("Guido van Rossum"),
+    Ruby("Yukihiro Matsumoto"), 
+    Java("James Gosling")
+]
+
+for name in names:
+    print(name.creator())
+
+#poliformismo sin herencia
+
+    
+class JavaScript:
+    def __init__(self,year):
+        self.year = year
+
+    def creator_year(self):
+        return f'JavaScript fue creado en {self.year}'   
+class Python:
+    def __init__(self,year):
+        self.year = year
+    
+    def creator_year(self):
+        return f'Python fue creado por {self.year}'
+class Ruby:
+    def __init__(self,year):
+        self.year = year
+
+    def creator_year(self):
+        return  f'Ruby fue creado por {self.year}'
+class Java:
+    def __init__(self,year):
+        self.year = year
+
+    def creator_year(self):
+         return f'Java fue creado por {self.year}'
+    
+
+javaScript = JavaScript(1995)
+python = Python(1991)
+ruby = Ruby(1993) 
+java =Java(1995)
+
+def year_render(year_objet):
+    print(year_objet.creator_year())
+
+year_render(javaScript)
+year_render(python)
+year_render(ruby)
+year_render(java)
+

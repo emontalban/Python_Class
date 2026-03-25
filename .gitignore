@@ -9,3 +9,6 @@ pipenv*
 # Python
 __pycache__/
 *.pyc
+
+# archivos de texto
+.txt
